@@ -37,10 +37,15 @@ jobs:
       run: |
         cp /mingw64/bin/libraylib.dll .
 
-    - name: Upload dasher.exe and libraylib.dll
+    - name: Copy textures folder
+      run: |
+        cp -r Dasher/textures .
+
+    - name: Upload dasher.exe, libraylib.dll, and textures
       uses: actions/upload-artifact@v2
       with:
         name: dasher-exe
         path: |
           dasher.exe
           libraylib.dll
+          textures/
