@@ -32,9 +32,15 @@ jobs:
         pacman -S --noconfirm mingw-w64-x86_64-raylib
         g++ -o dasher.exe Dasher/dasher.cpp -I/mingw64/include -L/mingw64/lib -lraylib -lopengl32 -lgdi32 -lwinmm
 
-    - name: Copy libraylib.dll
+    - name: Verify and Copy libraylib.dll
+      shell: msys2 {0}
       run: |
-        cp /mingw64/bin/libraylib.dll .
+        if [ -f /mingw64/bin/libraylib.dll ]; then
+          cp /mingw64/bin/libraylib.dll .
+        else
+          echo "libraylib.dll not found!"
+          exit 1
+        fi
 
     - name: Copy assets folder
       run: |
@@ -46,4 +52,5 @@ jobs:
         name: dasher-exe
         path: |
           dasher.exe
+          libraylib.dll
           assets/
