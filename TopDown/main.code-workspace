@@ -1,17 +1,12 @@
 {
 	"folders": [
 		{
-			"name": "Dasher",
 			"path": "."
 		},
 		{
 			"name": "GithubActions",
 			"path": "../.github/workflows"
 		},
-		{
-			"name": "TopDown",
-			"path": "."
-		}
 	],
 	"settings": {
 		"files.associations": {
