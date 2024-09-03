@@ -1,7 +1,7 @@
 name: Build dasher.cpp
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
   push:
     branches:
       - main
@@ -26,6 +26,7 @@ jobs:
           mingw-w64-x86_64-raylib
 
     - name: Compile Dasher/dasher.cpp
+      shell: msys2 {0}
       run: |
         pacman -Syu --noconfirm
         pacman -S --noconfirm mingw-w64-x86_64-raylib
