@@ -27,7 +27,7 @@ jobs:
 
     - name: Compile Dasher/dasher.cpp
       run: |
-        g++ -o dasher.exe dasher.cpp -lraylib -lopengl32 -lgdi32 -lwinmm
+        g++ -o dasher.exe Dasher/dasher.cpp -lraylib -lopengl32 -lgdi32 -lwinmm
 
     - name: Upload dasher.exe
       uses: actions/upload-artifact@v2
