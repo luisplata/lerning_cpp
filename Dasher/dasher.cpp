@@ -19,7 +19,7 @@ int main()
     // initial position of the rectangle
     // graphics
     // Player
-    Texture2D player = LoadTexture("textures/scarfy.png");
+    Texture2D player = LoadTexture("Assets/textures/scarfy.png");
     Rectangle playerRec;
     playerRec.width = player.width / 6;
     playerRec.height = player.height;
@@ -30,7 +30,7 @@ int main()
     int velocityY = 0;
 
     // Enemy
-    Texture2D enemy = LoadTexture("textures/12_nebula_spritesheet.png");
+    Texture2D enemy = LoadTexture("Assets/textures/12_nebula_spritesheet.png");
     Rectangle enemyRec;
     enemyRec.width = enemy.width / 8;
     enemyRec.height = enemy.height / 8;
