@@ -25,7 +25,7 @@ jobs:
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-raylib
 
-    - name: Compile dasher.cpp
+    - name: Compile Dasher/dasher.cpp
       run: |
         g++ -o dasher.exe dasher.cpp -lraylib -lopengl32 -lgdi32 -lwinmm
 
