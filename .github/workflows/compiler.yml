@@ -32,8 +32,15 @@ jobs:
         pacman -S --noconfirm mingw-w64-x86_64-raylib
         g++ -o dasher.exe Dasher/dasher.cpp -I/mingw64/include -L/mingw64/lib -lraylib -lopengl32 -lgdi32 -lwinmm
 
-    - name: Upload dasher.exe
+    - name: Copy libraylib.dll
+      shell: msys2 {0}
+      run: |
+        cp /mingw64/bin/libraylib.dll .
+
+    - name: Upload dasher.exe and libraylib.dll
       uses: actions/upload-artifact@v2
       with:
         name: dasher-exe
-        path: dasher.exe
+        path: |
+          dasher.exe
+          libraylib.dll
