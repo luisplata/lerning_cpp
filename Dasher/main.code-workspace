@@ -3,6 +3,10 @@
 		{
 			"name": "Dasher",
 			"path": "."
+		},
+		{
+			"name": "GithubActions",
+			"path": "../.github/workflows"
 		}
 	],
 	"settings": {
