@@ -1,9 +1,11 @@
 #include "raylib.h"
+#include "BaseCharacter.h"
 
-class Character
+class Enemy : BaseCharacter
 {
 public:
-    Character(int width, int height);
+
+    Enemy(Vector2 pos, Texture2D idle, Texture2D run);
 
     Vector2 getWordPosition() { return wordPosition; }
 
@@ -16,8 +18,8 @@ public:
     void finishGame();
 
 private:
-    Texture2D idle{LoadTexture("assets/characters/knight_idle_spritesheet.png")};
-    Texture2D run{LoadTexture("assets/characters/knight_run_spritesheet.png")};
+    Texture2D idle{LoadTexture("assets/characters/goblin_idle_spritesheet.png")};
+    Texture2D run{LoadTexture("assets/characters/goblin_run_spritesheet.png")};
     Texture2D texture = idle;
     Vector2 screenPosition{};
     Vector2 wordPosition{};

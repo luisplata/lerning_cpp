@@ -1,7 +1,8 @@
 #include "raylib.h"
 #include "raymath.h"
-#include "Assets/src/Character.cpp"
-#include "Assets/src/Prop.cpp"
+#include "Character.h"
+#include "Prop.h"
+#include "Enemy.h"
 
 int main()
 {
@@ -21,6 +22,11 @@ int main()
     Prop props[2]{
         Prop{Vector2{600.f, 300.f}, LoadTexture("assets/nature_tileset/Rock.png")},
         Prop{Vector2{400.f, 500.f}, LoadTexture("assets/nature_tileset/Rock.png")}};
+
+    // enemy
+    Enemy goblin{Vector2{200.f, 200.f},
+                 LoadTexture("assets/characters/goblin_idle_spritesheet.png"),
+                 LoadTexture("assets/characters/goblin_run_spritesheet.png")};
 
     while (!WindowShouldClose())
     {
@@ -58,6 +64,9 @@ int main()
                 player.undoMovement();
             }
         }
+
+        // Draw enemy
+        goblin.TickFrame(deltaTime);
 
         EndDrawing();
     }
