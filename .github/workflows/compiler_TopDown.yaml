@@ -29,7 +29,7 @@ jobs:
       run: |
         pacman -Syu --noconfirm
         pacman -S --noconfirm mingw-w64-x86_64-raylib
-        g++ -o topdown.exe TopDown/main.cpp -I/mingw64/include -L/mingw64/lib -lraylib -lopengl32 -lgdi32 -lwinmm
+        g++ -o topdown.exe $(find TopDown -name '*.cpp') -I/mingw64/include -I./TopDown -L/mingw64/lib -lraylib -lopengl32 -lgdi32 -lwinmm
 
     - name: Verify and Copy libraylib.dll
       shell: msys2 {0}
