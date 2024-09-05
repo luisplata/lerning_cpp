@@ -28,6 +28,8 @@ int main()
                  LoadTexture("assets/characters/goblin_idle_spritesheet.png"),
                  LoadTexture("assets/characters/goblin_run_spritesheet.png")};
 
+    goblin.setTarget(&player);
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -72,6 +74,7 @@ int main()
     }
     UnloadTexture(map);
     player.finishGame();
+    goblin.finishGame();
     for (Prop prop : props)
     {
         prop.finishGame();
