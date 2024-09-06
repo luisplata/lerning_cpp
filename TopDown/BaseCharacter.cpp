@@ -6,6 +6,13 @@ BaseCharacter::BaseCharacter()
 {
 }
 
+BaseCharacter::BaseCharacter(Texture2D idleAnim, Texture2D runAnim)
+{
+    idle = idleAnim;
+    run = runAnim;
+    texture = idleAnim;
+}
+
 Rectangle BaseCharacter::getCollisionRec()
 {
     return Rectangle{getScreenPosition().x, getScreenPosition().y, scale * width, scale * height};

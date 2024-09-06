@@ -6,6 +6,7 @@ class BaseCharacter
 {
 public:
     BaseCharacter();
+    BaseCharacter(Texture2D idleAnim, Texture2D runAnim);
 
     Rectangle getCollisionRec();
 
@@ -19,9 +20,13 @@ public:
 
     virtual Vector2 getScreenPosition() = 0;
 
+    bool getIsDead() { return isDead; }
+
+    void setIsDead(bool dead) { isDead = dead; }
+
 protected:
-    Texture2D idle{LoadTexture("assets/characters/knight_idle_spritesheet.png")};
-    Texture2D run{LoadTexture("assets/characters/knight_run_spritesheet.png")};
+    Texture2D idle{};
+    Texture2D run{};
     Texture2D texture = idle;
     Vector2 wordPosition{};
     Vector2 wordPositionLastFrame{};
@@ -37,6 +42,7 @@ protected:
     Vector2 velocity{};
 
 private:
+    bool isDead = false;
 };
 
 #endif
