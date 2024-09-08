@@ -1,23 +1,25 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "IGameState.h"
-#include "raylib.h"
-#include "raymath.h"
 #include "IState.h"
+#include "Player.h"
+#include "Map.h"
 #include "PerySystem.h"
 
 class Game : public IState
 {
 private:
-    IGameState *gameState{};
-
 public:
-    Game(IGameState *gameState, PerySystem *perySystem);
+    Game(Player *player, Map *map, PerySystem *perySystem);
     ~Game();
-    void OnEnter() override;
     void Update(float dt) override;
-    void OnExit() override;
-    PerySystem* perySystem{};
+    virtual void Render() override;
+    virtual void OnEnter() override;
+    Player *player;
+    Map *map;
+    PerySystem *perySystem;
+
+protected:
+private:
 };
 #endif

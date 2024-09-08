@@ -1,7 +1,7 @@
 #ifndef System_Input_h
 #define System_Input_h
 #include "ISystem.h"
-#include "System_Input_Component.h"
+#include "raylib.h"
 class System_Input : public ISystem
 {
 public:

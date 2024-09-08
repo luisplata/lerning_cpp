@@ -6,7 +6,10 @@ class Experience : public ObjectInScreen
 private:
     /* data */
 public:
-    Experience(/* args */);
+    Experience(Texture2D idle, Texture2D run);
     ~Experience();
+    void Reset();
+    virtual Vector2 getScreenPosition() override;
+    virtual void TickFrame(float deltaTime) override;
 };
 #endif // EXPERIENCE_H

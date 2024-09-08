@@ -22,9 +22,14 @@ public:
         }
     }
 
-private:
+    ISystem *GetSystem(EnumSystemsAvailable system)
+    {
+        return systemsAvailable[system];
+    }
     std::unordered_map<EnumSystemsAvailable, ISystem *> systemsAvailable;
     std::vector<ISystem *> systems;
+
+private:
 
 protected:
 };

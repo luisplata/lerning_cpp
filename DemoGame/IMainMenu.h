@@ -2,8 +2,7 @@
 #define IMAINMENU_H
 class IMainMenu
 {
-    public :
+public:
     virtual ~IMainMenu() = default;
-    virtual bool isGameStarted() const = 0;
 };
 #endif

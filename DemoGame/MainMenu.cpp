@@ -3,32 +3,22 @@
 #include "GameStateEnum.h"
 #include "PerySystem.h"
 
-MainMenu::MainMenu(IGameState *gameState, PerySystem *perySystem) : gameState(gameState), perySystem(perySystem)
+MainMenu::MainMenu()
 {
 }
 
 void MainMenu::Update(float dt)
 {
 
-    DrawText("Press any key to start", GetScreenWidth() / 2 - MeasureText("Press any key to start", 20) / 2, GetScreenHeight() / 2, 20, RED);
     // if key is pressed, startGame = true;
-    if (!startGame)
+    if (GetKeyPressed() != 0 && !isChangeState())
     {
-        // if key is pressed, startGame = true;
-        if (GetKeyPressed() != 0)
-        {
-            gameState->setState(GameStateEnum::Game);
-        }
+        changeState = true;
+        nextState = GameStateEnum::Game;
     }
 }
 
-void MainMenu::OnEnter()
+void MainMenu::Render()
 {
-    startGame = false;
-    perySystem->AddSystem(EnumSystemsAvailable::System_Input);
-}
-
-void MainMenu::OnExit()
-{
-    perySystem->ClearSystems();
+    DrawText("Press any key to start", GetScreenWidth() / 2 - MeasureText("Press any key to start", 20) / 2, GetScreenHeight() / 2, 20, RED);
 }

@@ -5,6 +5,8 @@
 #include "System_Map.h"
 #include "EnumSystemsAvailable.h"
 #include <iostream> // Para std::cout
+#include "System_Exp.h"
+#include "SpawnEnemies.h"
 
 PerySystem::PerySystem()
 {
@@ -12,11 +14,13 @@ PerySystem::PerySystem()
     systemsAvailable[EnumSystemsAvailable::System_Player] = new SystemPlayer();
     systemsAvailable[EnumSystemsAvailable::System_Render] = new System_Render();
     systemsAvailable[EnumSystemsAvailable::System_Map] = new System_Map();
+    systemsAvailable[EnumSystemsAvailable::System_Experiencie] = new System_Exp();
 
     systems.push_back(systemsAvailable[EnumSystemsAvailable::System_Map]);
     systems.push_back(systemsAvailable[EnumSystemsAvailable::System_Render]);
     systems.push_back(systemsAvailable[EnumSystemsAvailable::System_Player]);
     systems.push_back(systemsAvailable[EnumSystemsAvailable::System_Input]);
+    systems.push_back(systemsAvailable[EnumSystemsAvailable::System_Experiencie]);
 
 }
 
