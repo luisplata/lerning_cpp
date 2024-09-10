@@ -31,6 +31,13 @@ jobs:
         pacman -S --noconfirm mingw-w64-x86_64-raylib
         g++ -o demogame.exe $(find DemoGame -name '*.cpp') -I/mingw64/include -I./DemoGame -L/mingw64/lib -lraylib -lopengl32 -lgdi32 -lwinmm
 
+    - name: Copy required DLLs
+      shell: msys2 {0}
+      run: |
+        cp /mingw64/bin/libgcc_s_seh-1.dll .
+        cp /mingw64/bin/libstdc++-6.dll .
+        cp /mingw64/bin/libwinpthread-1.dll .
+
     - name: Verify and Copy libraylib.dll
       shell: msys2 {0}
       run: |
@@ -51,5 +58,8 @@ jobs:
         name: demogame
         path: |
           demogame.exe
+          libgcc_s_seh-1.dll
+          libstdc++-6.dll
+          libwinpthread-1.dll
           libraylib.dll
           assets/
