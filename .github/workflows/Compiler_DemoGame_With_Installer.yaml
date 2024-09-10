@@ -1,0 +1,87 @@
+name: Compile and Create Installer for DemoGame
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: >-
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-raylib
+
+    - name: Compile DemoGame/main.cpp
+      shell: msys2 {0}
+      run: |
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm mingw-w64-x86_64-raylib
+        g++ -o demogame.exe $(find DemoGame -name '*.cpp') -I/mingw64/include -I./DemoGame -L/mingw64/lib -lraylib -lopengl32 -lgdi32 -lwinmm
+
+    - name: Copy required DLLs
+      shell: msys2 {0}
+      run: |
+        cp /mingw64/bin/libgcc_s_seh-1.dll .
+        cp /mingw64/bin/libstdc++-6.dll .
+        cp /mingw64/bin/libwinpthread-1.dll .
+
+    - name: Verify and Copy libraylib.dll
+      shell: msys2 {0}
+      run: |
+        if [ -f /mingw64/bin/libraylib.dll ]; then
+          cp /mingw64/bin/libraylib.dll .
+        else
+          echo "libraylib.dll not found!"
+          exit 1
+        fi
+
+    - name: Copy assets folder
+      run: |
+        cp -r DemoGame/assets .
+
+    - name: Install Inno Setup
+      run: choco install innosetup --yes
+
+    - name: Create Installer
+      run: |
+        echo ; Script de Inno Setup para DemoGame > setup.iss
+        echo [Setup] >> setup.iss
+        echo AppName=DemoGame >> setup.iss
+        echo AppVersion=1.0 >> setup.iss
+        echo OutputDir=. >> setup.iss
+        echo OutputBaseFilename=DemoGameInstaller >> setup.iss
+        echo DefaultDirName={pf}\DemoGame >> setup.iss
+        echo DefaultGroupName=DemoGame >> setup.iss
+        echo SetupIconFile=icon.ico >> setup.iss
+        echo [Files] >> setup.iss
+        echo Source: "demogame.exe"; DestDir: "{app}"; Flags: ignoreversion >> setup.iss
+        echo Source: "libraylib.dll"; DestDir: "{app}"; Flags: ignoreversion >> setup.iss
+        echo Source: "libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion >> setup.iss
+        echo Source: "libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion >> setup.iss
+        echo Source: "libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion >> setup.iss
+        echo Source: "assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs >> setup.iss
+        echo [Icons] >> setup.iss
+        echo Name: "{commondesktop}\DemoGame"; Filename: "{app}\demogame.exe" >> setup.iss
+        echo Name: "{group}\DemoGame"; Filename: "{app}\demogame.exe" >> setup.iss
+        echo [Run] >> setup.iss
+        echo Filename: "{app}\demogame.exe"; Description: "{cm:LaunchProgram,DemoGame}"; Flags: nowait postinstall skipifsilent >> setup.iss
+        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
+
+    - name: Upload Installer
+      uses: actions/upload-artifact@v2
+      with:
+        name: DemoGameInstaller
+        path: DemoGameInstaller.exe
