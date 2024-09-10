@@ -1,0 +1,55 @@
+name: Compile DemoGame
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: >-
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-raylib
+
+    - name: Compile DemoGame/main.cpp
+      shell: msys2 {0}
+      run: |
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm mingw-w64-x86_64-raylib
+        g++ -o demogame.exe $(find DemoGame -name '*.cpp') -I/mingw64/include -I./DemoGame -L/mingw64/lib -lraylib -lopengl32 -lgdi32 -lwinmm
+
+    - name: Verify and Copy libraylib.dll
+      shell: msys2 {0}
+      run: |
+        if [ -f /mingw64/bin/libraylib.dll ]; then
+          cp /mingw64/bin/libraylib.dll .
+        else
+          echo "libraylib.dll not found!"
+          exit 1
+        fi
+
+    - name: Copy assets folder
+      run: |
+        cp -r DemoGame/assets .
+
+    - name: Upload demogame.exe and assets
+      uses: actions/upload-artifact@v2
+      with:
+        name: demogame
+        path: |
+          demogame.exe
+          libraylib.dll
+          assets/
