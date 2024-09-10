@@ -1,45 +1,40 @@
-name: Compile TopDown Game for Web
+name: Build and Deploy to Web
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build-web:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Emscripten
-      uses: emscripten-core/setup-emscripten@v2
-      with:
-        version: 2.0.30
-
-    - name: Compile for Web
+    - name: Install Emscripten
       run: |
-        emcmake cmake -S . -B build
-        emmake make -C build
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk install latest
+        ./emsdk activate latest
+        source ./emsdk_env.sh
 
-    - name: Copy build to public directory
+    - name: Build with Emscripten
       run: |
-        mkdir -p public
-        cp build/*.html public/
-        cp build/*.js public/
-        cp build/*.wasm public/
-        cp build/*.data public/
+        source ./emsdk/emsdk_env.sh
+        emcc -o index.html main.cpp -s USE_GLFW=3 -s USE_WEBGL2=1 -s WASM=1 --shell-file shell_minimal.html
 
-    - name: Upload Web build
-      uses: actions/upload-artifact@v2
-      with:
-        name: topdown-web
-        path: |
-          build/*.html
-          build/*.js
-          build/*.wasm
-          build/*.data
+    - name: Move build to folder
+      run: |
+        mkdir -p build
+        mv index.html build/
+
+    - name: Commit and Push build folder
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git add build/
+        git commit -m "Add build artifacts"
+        git push origin main
