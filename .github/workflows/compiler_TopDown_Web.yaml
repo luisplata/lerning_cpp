@@ -1,0 +1,43 @@
+name: Compile TopDown Game for Web
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-web:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Emscripten
+      uses: emscripten-core/emscripten@1.35.23
+
+    - name: Compile for Web
+      run: |
+        emcmake cmake -S . -B build
+        emmake make -C build
+
+    - name: Copy build to public directory
+      run: |
+        mkdir -p public
+        cp build/*.html public/
+        cp build/*.js public/
+        cp build/*.wasm public/
+        cp build/*.data public/
+
+    - name: Upload Web build
+      uses: actions/upload-artifact@v2
+      with:
+        name: topdown-web
+        path: |
+          build/*.html
+          build/*.js
+          build/*.wasm
+          build/*.data
